@@ -6,4 +6,5 @@ docker rmi docker.pkg.github.com/khu-dev/cloud-computing-dropbox-backend/django
 docker pull docker.pkg.github.com/khu-dev/cloud-computing-dropbox-backend/django
 docker rm -f django
 docker run -d --name django -p 80:8000 docker.pkg.github.com/khu-dev/cloud-computing-dropbox-backend/django
+docker ps
 '

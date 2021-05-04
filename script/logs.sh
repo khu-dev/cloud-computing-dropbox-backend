@@ -1,0 +1,1 @@
+ssh cloud-computing 'docker logs -f django'
