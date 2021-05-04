@@ -10,13 +10,13 @@ ElasticBeanstalk을 이용하면 편리하게 배포를 자동화할 수 있지�
 
 1. EC2 접속을 위한 ssh pem key 
 2. 원활한 ssh 명령어 수행을 위한 ssh config
-3. Github package의 container registry에 로그인하기 위한 Github token
+3. Github package registry에 로그인하기 위한 Github token
 
 ```shell
-$ docker login ghcr.io -u umi0410
+$ docker login docker.pkg.github.com -u umi0410
 ```
 
-전달 받은 .pem key과 config를 .ssh에 저장합니다. 이후 아래 커맨드를 통해 container registry에 인증합니다.
+전달 받은 .pem key과 config를 .ssh에 저장합니다. 이후 위의 커맨드를 통해 container registry에 인증합니다.
 
 ```shell
 $ ./script/deploy.sh
