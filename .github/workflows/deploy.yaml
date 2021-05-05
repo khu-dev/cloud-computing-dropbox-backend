@@ -22,8 +22,8 @@ jobs:
           git clone https://github.com/khu-dev/cloud-computing-dropbox-backend
           cd cloud-computing-dropbox-backend
           pip3 install -r requirements.txt
-          fuser -k 80/tcp
-          nohup python3 manage.py runserver 0.0.0.0:80 &
+          sudo fuser -k 80/tcp
+          nohup sudo python3 manage.py runserver 0.0.0.0:80 &
           sleep 5 # wait
           echo "배포한 뒤의 최근 로그"
           tail nohup.out
