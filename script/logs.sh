@@ -1,1 +1,1 @@
-ssh cloud-computing 'docker logs -f django'
+ssh -i ~/.ssh/cloud-computing.pem ubuntu@api.drive.jinsu.me  'tail -f /home/ubuntu/cloud-computing-dropbox-backend/nohup.out'

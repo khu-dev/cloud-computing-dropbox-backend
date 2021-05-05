@@ -27,7 +27,13 @@ jobs:
           sudo nohup python3 manage.py runserver 0.0.0.0:80 1>nohup.out 2>1&
 
     - name: 로그 보기
-      run: |
-        sleep 3
-        echo "### 배포 작업을 완료했습니다. 서버의 최근 로그 보기 ###"
-        tail cloud-computing-dropbox-backend/nohup.out
+      uses: appleboy/ssh-action@master
+      with:
+        host: api.drive.jinsu.me
+        username: ubuntu
+        key: ${{ secrets.CLOUD_COMPUTING_SSH_KEY }}
+        port: 22
+        script: |
+          sleep 3
+          echo "### 배포 작업을 완료했습니다. 서버의 최근 로그 보기 ###"
+          tail cloud-computing-dropbox-backend/nohup.out
