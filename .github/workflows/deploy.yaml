@@ -9,6 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: executing remote ssh commands using ssh key
       uses: appleboy/ssh-action@master
       with:
@@ -18,12 +19,15 @@ jobs:
         port: 22
         script: |
           cd /home/ubuntu
-          rm -rf cloud-computing-dropbox-backend || echo "cloud-computing-dropbox-backend 디렉토리가 존재하지 않습니다."
+          sudo rm -rf cloud-computing-dropbox-backend || echo "cloud-computing-dropbox-backend 디렉토리가 존재하지 않습니다."
           git clone https://github.com/khu-dev/cloud-computing-dropbox-backend
           cd cloud-computing-dropbox-backend
           sudo pip3 install -r requirements.txt
           sudo fuser -k 80/tcp
-          sudo nohup python3 manage.py runserver 0.0.0.0:80 &
-          sleep 5 # wait
-          echo "배포한 뒤의 최근 로그"
-          tail nohup.out
+          sudo nohup python3 manage.py runserver 0.0.0.0:80 1>nohup.out 2>1&
+
+    - name: 로그 보기
+      run: |
+        sleep 3
+        echo "### 배포 작업을 완료했습니다. 서버의 최근 로그 보기 ###"
+        tail cloud-computing-dropbox-backend/nohup.out
