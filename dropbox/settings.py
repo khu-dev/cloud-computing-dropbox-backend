@@ -126,13 +126,16 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (
     AWS_STORAGE_BUCKET_NAME, AWS_REGION)
 AWS_DEFAULT_ACL = config_dict['aws']['default_acl']
 # AWS_LOCATION = 'static'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' if config_dict['aws']['s3_enabled'] else 'django.core.files.storage'
-STATIC_URL = 'https://%s/' % AWS_S3_CUSTOM_DOMAIN
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' if config_dict['aws']['s3_enabled'] else 'django.core.files.storage.FileSystemStorage'
+STATIC_URL = ('https://%s/' % AWS_S3_CUSTOM_DOMAIN) if config_dict['aws']['s3_enabled'] else "localhost:8000/"
+
+# 이거 뭐하는 건지 잘 모르겠습니다.
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-
+# 이거 뭐하는 건지 잘 모르겠습니다.
 STATIC_URL = '/static/'
+
 MEDIA_URL = ''
 MEDIA_ROOT = os.path.join(BASE_DIR)
 

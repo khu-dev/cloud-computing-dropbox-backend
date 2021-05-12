@@ -13,7 +13,7 @@ aws:
 #  region: ""
 #  bucket_name: ""
 #  default_acl: ""
-  s3_enabled: true
+  s3_enabled: false
   region: "us-east-1"
   bucket_name: "storage.drive.jinsu.me"
   default_acl: "public-read"
