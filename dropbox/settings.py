@@ -14,7 +14,7 @@ from pathlib import Path
 import yaml
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+print("### Load config", os.path.join('config', os.getenv('DROPBOX_ENVIRONMENT', 'default') + '.yaml'))
 config_file = open(os.path.join('config', os.getenv('DROPBOX_ENVIRONMENT', 'default') + '.yaml'))
 config_dict = yaml.load(config_file, yaml.SafeLoader)
 

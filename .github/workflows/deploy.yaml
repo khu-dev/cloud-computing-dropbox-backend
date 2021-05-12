@@ -28,7 +28,7 @@ jobs:
           cd cloud-computing-dropbox-backend
           sudo pip3 install -r requirements.txt
           sudo fuser -k 80/tcp
-          DROPBOX_ENVIRONMENT=dev sudo nohup python3 manage.py runserver 0.0.0.0:80 1>nohup.out 2>nohup.out &
+          sudo DROPBOX_ENVIRONMENT=dev nohup python3 manage.py runserver 0.0.0.0:80 1>../nohup.out 2>&1 &
 
     - name: 로그 보기
       uses: appleboy/ssh-action@master
@@ -40,4 +40,4 @@ jobs:
         script: |
           sleep 3
           echo "### 배포 작업을 완료했습니다. 서버의 최근 로그 보기 ###"
-          tail cloud-computing-dropbox-backend/nohup.out
+          tail nohup.out
