@@ -21,6 +21,36 @@ ElasticBeanstalk을 이용하면 편리하게 배포를 자동화할 수 있지�
   $ pip freeze > requirements.txt
   ```
 
+## How to configure
+
+```yaml
+databases:
+  default:
+    ENGINE: 'django.db.backends.sqlite3'
+    NAME: '../../db.sqlite3'
+
+aws:
+  # AWS Educate 특성상 credential을 이용하는 IAM User를 사용할 수 없으므로
+  # IAM Role, Instance profile을 이용합니다. 따라서 EC2에서는 credential을 설정할 필요 없습니다.
+  # 로컬의 경우 $ aws configure를 통해 설정할 것.
+  s3_enabled: false
+  region: "us-east-1"
+  bucket_name: "storage.drive.jinsu.me"
+  default_acl: "public-read"
+```
+
+`./config/$DROPBOX_ENVIRONMENT.yaml` 파일에 설정을 기입해주세요.
+`./config/default.yaml` 은 Github에 공개되는 file이므로 credential을 포함하지 않게 주의해주세요. default.yaml은 예시 파일 같은 느낌이고, 각자 새로운 `.yaml` 만들어 사용할 것을 권장합니다.
+
+* e.g. local 환경에서 개발할 때
+  * local 환경에서도 credential을 이용할 수 있으니 `./config/local.yaml` 을 정의할 것을 추천합니다.
+    DB는 간단히 SQLite3를, storage는 S3가 아닌 File system을 사용할 것을 권장합니다.
+  * `DROPBOX_ENVIRONMENT=local`로 설정하신 뒤 `./config/local.yaml` 에 설정을 기입하시면 됩니다.
+* e.g. dev 환경에 배포할 때
+  * EC2에 배포하는 경우이고 `/home/ubuntu/dev.yaml` 을 자동으로 `/home/ubuntu/cloud-computing-dropbox-backend/config/dev.yaml` 로 복사해 이용하게 됩니다.
+  * DB는 RDS를, storage는 S3를 이용합니다.
+
+
 ## 로그 보는 방법
 
 ```shell
@@ -39,7 +69,7 @@ EC2 인스턴스에 접속해서 로그를 볼 수 있습니다. 편의상 스�
   따라서 그러한 충돌과 오류를 막기 위해 간단한 개발 단계이므로 **RDS의 테이블 정의를 수정하는 경우 RDS의 테이블을 모두 지운 뒤 초기 migration을 진행합니다. 이 코드는 `./script/migrate.sh` 에 정의되어있습니다.**
 * 개발 환경(RDS)에 배포할 때에는 아래 커맨드 이용
   ```shell
-  $ ./script/
+  $ ./script/migrate.sh
   ```
 * 로컬 환경에 배포할 때에는 직접 `makemigrations`와 `migrate` 커맨드를 이용할 것.
   
