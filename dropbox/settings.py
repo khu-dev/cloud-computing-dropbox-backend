@@ -33,6 +33,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'file',
+    'storages',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -114,9 +116,28 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# AWS_ACCESS_KEY_ID = config_dict['aws']['access_key_id']
+# AWS_SECRET_ACCESS_KEY = config_dict['aws']['secret_access_key']
+# AWS_SESSION_TOKEN = config_dict['aws']['session_token']
+
+AWS_REGION = config_dict['aws']['region']
+AWS_STORAGE_BUCKET_NAME = config_dict['aws']['bucket_name']
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (
+    AWS_STORAGE_BUCKET_NAME, AWS_REGION)
+AWS_DEFAULT_ACL = config_dict['aws']['default_acl']
+# AWS_LOCATION = 'static'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' if config_dict['aws']['s3_enabled'] else 'django.core.files.storage'
+STATIC_URL = 'https://%s/' % AWS_S3_CUSTOM_DOMAIN
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
 STATIC_URL = '/static/'
+MEDIA_URL = ''
+MEDIA_ROOT = os.path.join(BASE_DIR)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

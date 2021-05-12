@@ -24,6 +24,7 @@ jobs:
           cd /home/ubuntu
           sudo rm -rf cloud-computing-dropbox-backend || echo "cloud-computing-dropbox-backend 디렉토리가 존재하지 않습니다."
           git clone https://github.com/khu-dev/cloud-computing-dropbox-backend
+          cp dev.yaml cloud-computing-dropbox-backend/config/
           cd cloud-computing-dropbox-backend
           sudo pip3 install -r requirements.txt
           sudo fuser -k 80/tcp

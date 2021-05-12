@@ -62,3 +62,9 @@ db.sqlite3
 
 config/*
 !config/default.yaml
+
+# 로컬에 업로드한 파일
+uploaded
+
+*/migrations/*
+*/migrations/__init__.py

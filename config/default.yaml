@@ -2,3 +2,18 @@ databases:
   default:
     ENGINE: 'django.db.backends.sqlite3'
     NAME: '../../db.sqlite3'
+
+aws:
+  # AWS Educate 특성상 credential을 이용하는 IAM User를 사용할 수 없으므로
+  # IAM Role, Instance profile을 이용합니다. 따라서 EC2에서는 credential을 설정할 필요 없습니다.
+  # 로컬의 경우 필요!
+#  s3_enabled: false
+#  access_key_id: ""
+#  secret_access_key: ""
+#  region: ""
+#  bucket_name: ""
+#  default_acl: ""
+  s3_enabled: true
+  region: "us-east-1"
+  bucket_name: "storage.drive.jinsu.me"
+  default_acl: "public-read"
