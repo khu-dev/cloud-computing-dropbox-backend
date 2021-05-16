@@ -21,10 +21,19 @@ from rest_framework.routers import DefaultRouter
 from file.views import FileViewSet
 from . import views
 
+from django.urls import path
+from rest_framework_simplejwt import views as jwt_views
+
 router = outer = DefaultRouter(trailing_slash=False)
 router.register(r'files', FileViewSet, basename='files')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(r'', include(router.urls)),
+
+    path('api/', include('dropbox.user.urls')),
+
+    # https://simpleisbetterthancomplex.com/tutorial/2018/12/19/how-to-use-jwt-authentication-with-django-rest-framework.html
+    # path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 
 ]
