@@ -12,7 +12,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=User.objects.all())]  # 사용자 이메일을 유니크 필드로 지정
     )
 
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password = serializers.CharField(required=True, validators=[validate_password])
     check_password = serializers.CharField(write_only=True, required=True)
 
     class Meta:
@@ -35,6 +35,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
+            password=validated_data['password'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name']
         )
