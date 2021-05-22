@@ -17,14 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework.routers import DefaultRouter
-
+from user.views import RegisterView
 from file.views import FileViewSet
 from . import views
 
 router = outer = DefaultRouter(trailing_slash=False)
 router.register(r'files', FileViewSet, basename='files')
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(r'', include(router.urls)),
-
+    path('register/', RegisterView.as_view())
 ]
