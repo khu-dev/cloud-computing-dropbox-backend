@@ -17,9 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from user.views import RegisterView
 from file.views import FileViewSet
-from . import views
 
 router = outer = DefaultRouter(trailing_slash=False)
 router.register(r'files', FileViewSet, basename='files')
@@ -27,5 +27,8 @@ router.register(r'files', FileViewSet, basename='files')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(r'', include(router.urls)),
+    path('api/token/', TokenObtainPairView.as_view()),
+    path('api/token/refresh', TokenRefreshView.as_view()),
+    path('api/token/verify', TokenVerifyView.as_view()),
     path('register/', RegisterView.as_view())
 ]
