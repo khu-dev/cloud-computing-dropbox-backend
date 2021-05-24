@@ -11,7 +11,10 @@ class RegisterSerializer(serializers.ModelSerializer):
         required=True,
         validators=[UniqueValidator(queryset=User.objects.all())]  # 사용자 이메일을 유니크 필드로 지정
     )
-
+    username = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(queryset=User.objects.all())]
+    )
     password = serializers.CharField(required=True, validators=[validate_password])
     check_password = serializers.CharField(write_only=True, required=True)
 
