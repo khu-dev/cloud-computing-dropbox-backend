@@ -4,7 +4,7 @@ from django.conf import settings
 
 # 파일 모델
 class File(models.Model):
-    id = models.TextField(primary_key=True)
+    filename = models.CharField(max_length=32, primary_key=True)
     register_date = models.DateTimeField(auto_now_add=True) # 최초 등록일
     modified_date = models.DateTimeField(auto_now=True, null=True) # 수정 날짜
     is_shared = models.BooleanField(default=False)
