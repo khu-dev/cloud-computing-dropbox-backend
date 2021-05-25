@@ -72,4 +72,128 @@ EC2 인스턴스에 접속해서 로그를 볼 수 있습니다. 편의상 스�
   $ ./script/migrate.sh
   ```
 * 로컬 환경에 배포할 때에는 직접 `makemigrations`와 `migrate` 커맨드를 이용할 것.
+
+## API Documentation
+
+### 사용자 회원가입
+
+dropbox 사용자 회원 가입 api 설명입니다.
+
+#### Request
+
+#### URL
+
+```http
+POST /users
+Host: 
+```
+
+#### Parameter
+
+| Parameter      | Description                                            |
+| -------------- | ------------------------------------------------------ |
+| username       | 사용자 ID                                              |
+| email          | 사용자 이메일                                          |
+| password       | 사용자 비밀번호                                        |
+| check_password | 비밀번호 체크(password와 check_password가 동일해야 함) |
+| first_name     | 이름                                                   |
+| last_name      | 성                                                     |
+
+#### Response
+
+```json
+{
+    "username": "mynameis",
+    "email": "mynameis@gmail.com",
+    "first_name": "Penguin",
+    "last_name": "Park"
+}
+```
+
+### 토큰 발급
+
+dropbox에 로그인한 사용자에게 토큰 발급 api
+
+#### Request
+
+#### URL
+
+```http
+POST /api/token
+Host: 
+```
+
+#### Parameter
+
+| Parameter | Description     |
+| --------- | --------------- |
+| username  | 사용자 ID       |
+| password  | 사용자 비밀번호 |
+
+
+
+#### Response
+
+```json
+{
+    "refresh": "eydasdsadasdsadasdsadsadMDdmNGVjNzg3OTRlNzZkZDEwMzM3NTEiLCJABC.Tk8hBzQXNIABCf5iLiPUo-Y37eE7Tg9ABCRk",
+    "access": "eydasdsadsadasdsadsadsadsaJ0eXAiOiJKV1QiLCABCiJIUzI1NiJ9eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoABCjk2ODQ1LCJqdGkiOiI0MzUyMjQ3MmRmZjI0NGE1OTI3MGVhMTk0ZTllOWZmZCIsInVzZXJfaWQiOjJ9.5ROeABCQiz8Ql8Tp9UF5ZDl6BbgTCaqoAtnGQKgo"
+}
+```
+
+### 토큰 갱신
+
+토큰 갱신 api
+
+#### Request
+
+#### URL
+
+```http
+POST /api/token/refresh
+Host: 
+```
+
+#### Parameter
+
+| Parameter | Description   |
+| --------- | ------------- |
+| refresh   | refresh token |
+
+
+#### Response
+
+```json
+{
+    "access": "eyJ0edddddddjoiYWNjABCXGkiOiIwN2FlZGRlNjUyNWI0ABC.Y9fWy_YIIF1PB_ru20MifMEGwA1OiiNkDABC"
+}
+```
+
+### 토큰 검증
+
+토큰 검증 api
+
+#### Request
+
+#### URL
+
+```http
+POST /api/token/verify
+Host: 
+```
+
+#### Parameter
+
+| Parameter | Description  |
+| --------- | ------------ |
+| token     | access token |
+
+
+#### Response
+
+```json
+{
+}
+```
+
   
