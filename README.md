@@ -196,4 +196,88 @@ Host:
 }
 ```
 
+#### 파일 업로드
+dropbox 파일 업로드에 대한 설명입니다.
+
+##### Request
+##### URL
+```http
+POST /files
+Host: 
+```
+
+##### Parameter
+| Parameter | Description |
+| --- | --- |
+| file_name | 파일 이름 |
+| file_path | 파일의 저장경로 |
+| modified_date | 최근 수정한 날짜 |
+| user_id | 파일의 소유자 id |
+| is_shared | 파일이 공유되고 있는지 여부 |
+
+##### Response
+```json
+
+{
+    "file_name": "test.txt",
+    "file_path": "~/test.txt",
+    "modified_date": "2021-01-01",
+    "user_id": 1,
+    "is_shared": false
+}
+```
+
+#### 파일 다운로드
+dropbox 파일 다운로드에 대한 설명입니다.
+
+##### Request
+##### URL
+```http
+POST /files/{file_name}/download
+Host: 
+```
+
+##### Parameter
+| Parameter | Description |
+| --- | --- |
+| file_name | 파일 이름 |
+
+
+
+##### Response
+```
+[
+{"file_name":"test1.txt"},
+{"file_name":"test2.txt"},
+{"file_name":"test3.txt"},
+]
+```
+
+#### 파일 리스트 조회
+dropbox 사용자별 파일 조회에 대한 설명입니다.
+
+##### Request
+##### URL
+```http
+GET /files/{user_id}
+Host: 
+```
+
+##### Parameter
+| Parameter | Description |
+| --- | --- |
+|  user_id | 파일의 소유자 id  |
+
+
+##### Response
+```json
+
+{
+    "file_name": "test1.txt",
+    "file_name": "test2.txt",
+    "file_name": "test3.txt",
+}
+```
+
+
   
