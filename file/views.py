@@ -58,10 +58,18 @@ class FileViewSet(ModelViewSet):
     # download file
     # https://stackoverflow.com/questions/43441882/download-a-file-with-django
     def download(self, request):
-        file = File.objects.filter(File.get_id())
-        if file in File.objects.all():
-            print("Download", file)
-            print("Download", dir(file))
-            file = File(file=file)
-            return HttpResponse(file, content_type='text/plain')
+        # check user
+        user = User.objects.filter(User.get_username(self))
+        if user in User.objects.all():
+
+            # upload files
+            files = []
+            for file in request.FILES.getlist('files'):
+                if file in File.objects.all():
+                    print("Download", file)
+                    print("Download", dir(file))
+                    file = File(file=file)
+                    files.append(file)
+            return HttpResponse(files, content_type='text/plain')
+
         raise Http404

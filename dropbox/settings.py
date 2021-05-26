@@ -14,8 +14,11 @@ from pathlib import Path
 import yaml
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-print("### Load config", os.path.join('config', os.getenv('DROPBOX_ENVIRONMENT', 'default') + '.yaml'))
-config_file = open(os.path.join('config', os.getenv('DROPBOX_ENVIRONMENT', 'default') + '.yaml'), encoding='utf8')
+# print("### Load config", os.path.join('config', os.getenv('DROPBOX_ENVIRONMENT', 'default') + '.yaml'))
+print("### Load config", os.path.join('config', os.getenv('DROPBOX_ENVIRONMENT', 'dev') + '.yaml'))
+
+# config_file = open(os.path.join('config', os.getenv('DROPBOX_ENVIRONMENT', 'default') + '.yaml'), encoding='utf8')
+config_file = open(os.path.join('config', os.getenv('DROPBOX_ENVIRONMENT', 'dev') + '.yaml'), encoding='utf8')
 config_dict = yaml.load(config_file, yaml.SafeLoader)
 
 # Quick-start development settings - unsuitable for production
@@ -150,3 +153,4 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+
