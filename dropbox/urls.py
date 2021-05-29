@@ -18,7 +18,7 @@ from django.urls import path, include
 from rest_framework import routers
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
-from user.views import RegisterView
+from user.views import RegisterView, UserList, ChangePasswordView, UpdateProfileView
 from file.views import FileViewSet
 
 router = outer = DefaultRouter(trailing_slash=False)
@@ -31,4 +31,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view()),
     path('api/token/verify/', TokenVerifyView.as_view()),
     path('users/', RegisterView.as_view()),
+    path('users/list', UserList.as_view()),
+    path('users/password/<int:pk>', ChangePasswordView.as_view()),
+    path('users/profile/<int:pk>', UpdateProfileView.as_view()),
 ]
