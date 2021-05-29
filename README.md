@@ -75,6 +75,8 @@ EC2 인스턴스에 접속해서 로그를 볼 수 있습니다. 편의상 스�
 
 ## API Documentation
 
+## 1) 사용자 관련
+
 ### 사용자 회원가입
 
 dropbox 사용자 회원 가입 api 설명입니다.
@@ -196,4 +198,91 @@ Host:
 }
 ```
 
+### 사용자 비밀번호 수정
+
+dropbox 사용자 비밀번호 수정 api 설명입니다.
+
+#### Request
+
+#### URL
+
+```http
+PUT /users/password/<int:pk>
+Host: 
+```
+
+#### Parameter
+
+| Parameter      | Description                                            |
+| -------------- | ------------------------------------------------------ |
+| password       | 사용자 새로운 비밀번호                                   |
+| password2      | 사용자 새로운 비밀번호 체크                               |
+| old_password   | 사용자 이전 비밀번호                                     |
+
+#### Response
+
+```json
+{
+}
+```
+
+### 사용자 프로필 수정
+
+dropbox 사용자 프로필 수정 api 설명입니다.
+
+#### Request
+
+#### URL
+
+```http
+PUT /users/password/<int:pk>
+Host: 
+```
+
+#### Parameter
+
+| Parameter      | Description                                            |
+| -------------- | ------------------------------------------------------ |
+| username       | 사용자 새로운 비밀번호                                   |
+| first_name     | 사용자 이름                                             |
+| last_name      | 사용자 성                                               |
+| email          | 사용자 이메일                                           |
+
+#### Response
+
+```json
+{
+    "username": "mynameis",
+    "email": "mynameis@gmail.com",
+    "first_name": "Penguin",
+    "last_name": "Park"
+}
+```
+
+### 사용자 리스트 조회
+
+dropbox 사용자 리스트 조회 api 설명입니다.
+
+#### Request
+
+#### URL
+
+```http
+PUT /users/list/
+Host: 
+```
+
+#### Response
+
+```
+[
+    {
+     "username": "mynameis",
+    "email": "mynameis@gmail.com",
+    "first_name": "Penguin",
+    "last_name": "Park",
+    "date_joined": "2021-05-29T09:00:23.504315Z"
+    }
+]
+```
   
