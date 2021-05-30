@@ -20,19 +20,9 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from user.views import RegisterView
 from file.views import FileViewSet
-from file.views import DownloadViewSet
-
-# # upload , list > 분리할 것
-# router = outer = DefaultRouter(trailing_slash=False)
-# router.register(r'files', FileViewSet, basename='files')
-#
-# # download
-# download_router = outer = DefaultRouter(trailing_slash=False)
-# download_router.register(r'download', DownloadViewSet, basename='download')
 
 router = outer = DefaultRouter(trailing_slash=False)
 router.register(r"files", FileViewSet, basename="files")
-router.register(r"download", DownloadViewSet, basename="download")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -41,4 +31,5 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view()),
     path('api/token/verify/', TokenVerifyView.as_view()),
     path('users/', RegisterView.as_view()),
+
 ]
