@@ -268,7 +268,7 @@ dropbox 사용자 리스트 조회 api 설명입니다.
 #### URL
 
 ```http
-PUT /users/list/
+GET /users/list/
 Host: 
 ```
 
