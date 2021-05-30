@@ -121,7 +121,7 @@ dropbox에 로그인한 사용자에게 토큰 발급 api
 #### URL
 
 ```http
-POST /api/token
+POST /users/login
 Host: 
 ```
 
@@ -152,7 +152,7 @@ Host:
 #### URL
 
 ```http
-POST /api/token/refresh
+POST /users/login/refresh
 Host: 
 ```
 
@@ -180,7 +180,7 @@ Host:
 #### URL
 
 ```http
-POST /api/token/verify
+POST /users/login/verify
 Host: 
 ```
 
@@ -235,7 +235,7 @@ dropbox 사용자 프로필 수정 api 설명입니다.
 #### URL
 
 ```http
-PUT /users/password/<int:pk>
+PUT /users/profile/<int:pk>
 Host: 
 ```
 
