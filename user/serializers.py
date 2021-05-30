@@ -3,7 +3,6 @@ from abc import ABC
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
-from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
 
@@ -83,14 +82,14 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         instance.set_password(validated_data['password'])
         instance.save()
 
-        return instance
+        return
+
 
 # 사용자 정보 수정 시리얼라이저
 class UpdateProfileSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username', 'email', 'first_name', 'last_name')
         extra_kwargs = {
             'first_name': {'required': True},
             'last_name': {'required': True},
