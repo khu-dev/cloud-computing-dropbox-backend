@@ -11,10 +11,14 @@ from django.http import FileResponse
 from rest_framework import viewsets, renderers
 from rest_framework.decorators import action
 
+# AssertionError: .accepted_media_type not set on Response
+# https://stackoverflow.com/questions/55416471/how-to-resolve-assertionerror-accepted-renderer-not-set-on-response-in-django
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
+
 # trashViewSet
 from trash.models import Trash
 from trash.serializers import TrashSerializer
-import trash.views
 
 # Return data as-is.
 class PassthroughRenderer(renderers.BaseRenderer):
@@ -49,6 +53,8 @@ class FileViewSet(ModelViewSet):
 
     # Download file
     # https://stackoverflow.com/questions/38697529/how-to-return-generated-file-download-with-django-rest-framework
+    @api_view(('GET',))                                         # resolve assertion error
+    @renderer_classes((TemplateHTMLRenderer, JSONRenderer))     # resolve assertion error
     @action(methods=['get'], detail=True, renderer_classes=(PassthroughRenderer,))
     def download(self, *args, **kwargs):
         instance = self.get_object()
