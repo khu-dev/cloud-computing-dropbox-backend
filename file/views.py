@@ -11,8 +11,16 @@ from django.http import FileResponse
 from rest_framework import viewsets, renderers
 from rest_framework.decorators import action
 
+# AssertionError: .accepted_media_type not set on Response
+# https://stackoverflow.com/questions/55416471/how-to-resolve-assertionerror-accepted-renderer-not-set-on-response-in-django
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 
-# Return data as-is. View should supply a Response.
+# trashViewSet
+from trash.models import Trash
+from trash.serializers import TrashSerializer
+
+# Return data as-is.
 class PassthroughRenderer(renderers.BaseRenderer):
     serializer_class = FileSerializer
     media_type, format = '', ' '
@@ -45,6 +53,8 @@ class FileViewSet(ModelViewSet):
 
     # Download file
     # https://stackoverflow.com/questions/38697529/how-to-return-generated-file-download-with-django-rest-framework
+    @api_view(('GET',))                                         # resolve assertion error
+    @renderer_classes((TemplateHTMLRenderer, JSONRenderer))     # resolve assertion error
     @action(methods=['get'], detail=True, renderer_classes=(PassthroughRenderer,))
     def download(self, *args, **kwargs):
         instance = self.get_object()
@@ -58,3 +68,24 @@ class FileViewSet(ModelViewSet):
         response['Content-Disposition'] = 'attachment; filename="%s"' % instance.file.name
 
         return response
+
+
+    # move to trash
+    def destroy(self, request, *args, **kwargs):
+        
+        # 삭제할 파일
+        data = request.data
+        file_serializer = FileSerializer(data=data)
+        trash_serializer = TrashSerializer(data=data)
+
+        # trash db에 추가
+        if trash_serializer.is_valid():
+            trash_serializer.save()
+
+            # file db에서 삭제
+            if file_serializer.is_valid():
+                file_serializer.delete()
+                return Response(trash_serializer.data, status=status.HTTP_301_MOVED_PERMANENTLY)
+
+        else:
+            return Response(trash_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

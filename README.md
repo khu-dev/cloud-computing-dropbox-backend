@@ -317,6 +317,33 @@ Host:
 }
 ```
 
+### 휴지통
+dropbox 파일을 휴지통에 이동하는 작업에 대한 설명입니다.
+
+##### Request
+##### URL
+```http
+DELETE /files
+Host: 
+```
+
+##### Parameter
+| Parameter | Description |
+| --- | --- |
+| file_name | 파일 이름 |
+| file_path | 파일의 저장경로 |
+| modified_date | 최근 수정한 날짜 |
+| user_id | 파일의 소유자 id |
+| is_shared | 파일이 공유되고 있는지 여부 |
+
+##### Response
+```json
+
+{
+    “message” : “success delete!”
+}
+```
+
 ### 파일 다운로드
 dropbox 파일 다운로드에 대한 설명입니다.
 
