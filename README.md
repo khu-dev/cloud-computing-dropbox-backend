@@ -207,7 +207,7 @@ dropbox 사용자 비밀번호 수정 api 설명입니다.
 #### URL
 
 ```http
-PUT /users/password/<int:pk>
+PUT /users/password/<str:username>
 Host: 
 ```
 
@@ -235,7 +235,7 @@ dropbox 사용자 프로필 수정 api 설명입니다.
 #### URL
 
 ```http
-PUT /users/profile/<int:pk>
+PUT /users/profile/<str:username>
 Host: 
 ```
 
