@@ -376,23 +376,21 @@ dropbox 사용자별 파일 조회에 대한 설명입니다.
 ##### Request
 ##### URL
 ```http
-GET /files/{user_id}
+GET /files/
 Host: 
 ```
-
-##### Parameter
-| Parameter | Description |
-| --- | --- |
-|  user_id | 파일의 소유자 id  |
 
 
 ##### Response
 ```json
 
 {
-    "file_name": "test1.txt",
-    "file_name": "test2.txt",
-    "file_name": "test3.txt",
+   "file_name": "aaa",
+    "register_date": "2021-06-01T11:44:28.428331Z",
+    "modified_date": "2021-06-01T11:44:28.428331Z",
+    "is_shared": false,
+    "file": "https://storage.drive.jinsu.me.s3.us-east-1.amazonaws.com/uploaded/backend_api.md",
+    "user": 2
 }
 ```
 
