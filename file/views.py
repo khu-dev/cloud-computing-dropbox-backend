@@ -1,8 +1,11 @@
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 # FileViewSet
+from rest_framework_simplejwt.state import User
+
 from file.models import File
 from file.serializers import FileSerializer
 
@@ -20,19 +23,22 @@ from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from trash.models import Trash
 from trash.serializers import TrashSerializer
 
+
 # Return data as-is.
 class PassthroughRenderer(renderers.BaseRenderer):
     serializer_class = FileSerializer
     media_type, format = '', ' '
+
     def render(self, data, accepted_media_type=None, renderer_context=None):
         return data
 
 
 class FileViewSet(ModelViewSet):
     serializer_class = FileSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return File.objects.all()
+        return File.objects.filter(user=self.request.user)
 
     # upload files
     def create(self, request, *args, **kwargs):
@@ -53,8 +59,8 @@ class FileViewSet(ModelViewSet):
 
     # Download file
     # https://stackoverflow.com/questions/38697529/how-to-return-generated-file-download-with-django-rest-framework
-    @api_view(('GET',))                                         # resolve assertion error
-    @renderer_classes((TemplateHTMLRenderer, JSONRenderer))     # resolve assertion error
+    @api_view(('GET',))  # resolve assertion error
+    @renderer_classes((TemplateHTMLRenderer, JSONRenderer))  # resolve assertion error
     @action(methods=['get'], detail=True, renderer_classes=(PassthroughRenderer,))
     def download(self, *args, **kwargs):
         instance = self.get_object()
@@ -69,10 +75,9 @@ class FileViewSet(ModelViewSet):
 
         return response
 
-
     # move to trash
     def destroy(self, request, *args, **kwargs):
-        
+
         # 삭제할 파일
         data = request.data
         file_serializer = FileSerializer(data=data)

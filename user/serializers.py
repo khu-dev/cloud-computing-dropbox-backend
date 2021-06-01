@@ -1,5 +1,5 @@
 from abc import ABC
-
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
@@ -63,7 +63,7 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('old_password', 'password', 'password2', 'username', 'email', 'first_name', 'last_name')
+        fields = ('old_password', 'password', 'password2')
 
     # 새로운 비밃번호 체크
     def validate(self, attrs):
@@ -84,11 +84,7 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         if user.pk != instance.pk:
             raise serializers.ValidationError({"authorize": "해당 사용자가 아닙니다."})
 
-        instance.first_name = validated_data['first_name']
-        instance.last_name = validated_data['last_name']
-        instance.email = validated_data['email']
-        instance.username = validated_data['username']
-
+        instance.set_password(validated_data['password'])
         instance.save()
 
         return instance

@@ -28,6 +28,7 @@ class UserListView(generics.ListCreateAPIView):
 # 비밀번호 변경 api
 class ChangePasswordView(generics.UpdateAPIView):
     queryset = User.objects.all()
+    lookup_field = "username"
     permission_classes = (IsAuthenticated,)
     serializer_class = ChangePasswordSerializer
 
@@ -35,5 +36,6 @@ class ChangePasswordView(generics.UpdateAPIView):
 # 사용자 프로필 업데이트 api
 class UpdateProfileView(generics.UpdateAPIView):
     queryset = User.objects.all()
+    lookup_field = "username"
     permission_classes = (IsAuthenticated,)
     serializer_class = UpdateProfileSerializer
