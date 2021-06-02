@@ -1,16 +1,17 @@
+from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 # FileViewSet
-from rest_framework_simplejwt.state import User
+
 
 from file.models import File
 from file.serializers import FileSerializer
 
 # PassthroughRenderer
-from django.http import FileResponse
+from django.http import FileResponse, QueryDict
 from rest_framework import viewsets, renderers
 from rest_framework.decorators import action
 
@@ -42,7 +43,18 @@ class FileViewSet(ModelViewSet):
 
     # upload files
     def create(self, request, *args, **kwargs):
-        file_serializer = FileSerializer(data=request.data)
+        new_data = request.data.dict()
+        file_name = request.data['file_name']
+        is_shared = request.data['is_shared']
+        file = request.data['file']
+        new_data['file_name'] = file_name
+        new_data['is_shared'] = is_shared
+        new_data['file'] = file
+        new_data['user'] = User.objects.get(username=self.request.user).id
+
+        new_query_dict = QueryDict('', mutable=True)
+        new_query_dict.update(new_data)
+        file_serializer = FileSerializer(data=new_query_dict)
 
         if file_serializer.is_valid():
             file_serializer.save()
