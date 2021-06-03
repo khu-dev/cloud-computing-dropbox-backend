@@ -116,7 +116,9 @@ class RecentFileView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, format=None):
-        file = File.objects.filter(user=self.request.user).order_by("-modified_date")
+        now = datetime.datetime.now()
+        compared_time = now - datetime.timedelta(days=2)
+        file = File.objects.filter(user=self.request.user, modified_date__gte=compared_time)
 
         serializer = FileSerializer(file, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
