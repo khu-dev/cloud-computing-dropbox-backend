@@ -302,7 +302,7 @@ Host:
 | file_name | 파일 이름 |
 | file | 파일 |
 | is_shared | 파일이 공유되고 있는지 여부 |
-
+| is_starred | 파일의 중요도  |
 ##### Response
 ```json
 
