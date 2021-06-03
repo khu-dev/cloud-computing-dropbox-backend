@@ -48,8 +48,8 @@ class FileViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         new_data = request.data.dict()
         file_name = request.data['file_name']
-        is_shared = request.data['is_shared']
-        is_starred = request.data['is_starred']
+        is_shared = request.data.get('is_shared', False)
+        is_starred = request.data.get('is_starred', False)
         file = request.data['file']
         new_data['file_name'] = file_name
         new_data['is_shared'] = is_shared
@@ -64,7 +64,6 @@ class FileViewSet(ModelViewSet):
         if file_serializer.is_valid():
             file_serializer.save()
             return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -122,6 +121,7 @@ class RecentFileView(APIView):
         serializer = FileSerializer(file, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 # 중요 문서함을 조회하는 api
 class StarredFileView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -131,4 +131,3 @@ class StarredFileView(APIView):
 
         serializer = FileSerializer(files, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
