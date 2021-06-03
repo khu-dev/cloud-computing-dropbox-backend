@@ -300,20 +300,20 @@ Host:
 | Parameter | Description |
 | --- | --- |
 | file_name | 파일 이름 |
-| file_path | 파일의 저장경로 |
-| modified_date | 최근 수정한 날짜 |
-| user_id | 파일의 소유자 id |
+| file | 파일 |
 | is_shared | 파일이 공유되고 있는지 여부 |
-
+| is_starred | 파일의 중요도  |
 ##### Response
 ```json
 
 {
-    "file_name": "test.txt",
-    "file_path": "~/test.txt",
-    "modified_date": "2021-01-01",
-    "user_id": 1,
-    "is_shared": false
+    "file_name": "dddddddaaaaffddddddddddsdaaaa",
+    "register_date": "2021-06-02T08:25:04.211899Z",
+    "modified_date": "2021-06-02T08:25:04.212943Z",
+    "is_shared": false,
+    "is_starred" : false,
+    "file": "https://storage.drive.jinsu.me.s3.us-east-1.amazonaws.com/uploaded/files.PNG",
+    "user": 1
 }
 ```
 
@@ -389,8 +389,77 @@ Host:
     "register_date": "2021-06-01T11:44:28.428331Z",
     "modified_date": "2021-06-01T11:44:28.428331Z",
     "is_shared": false,
-    "file": "https://storage.drive.jinsu.me.s3.us-east-1.amazonaws.com/uploaded/backend_api.md",
+    "file": "",
     "user": 2
 }
 ```
 
+### 최근 파일 목록 조회
+dropbox 사용자별 파일 조회에 대한 설명입니다.
+
+##### Request
+##### URL
+```http
+GET /myfile/recent
+Host: 
+```
+
+
+##### Response
+```json
+
+{
+   "file_name": "aaa",
+    "register_date": "2021-06-01T11:44:28.428331Z",
+    "modified_date": "2021-06-01T11:44:28.428331Z",
+    "is_shared": false,
+    "is_starred": false,
+    "file": "",
+    "user": 2
+}
+
+{
+   "file_name": "aaa",
+    "register_date": "2021-06-01T10:44:28.428331Z",
+    "modified_date": "2021-06-01T10:44:28.428331Z",
+    "is_shared": false,
+    "is_starred": false,
+    "file": "",
+    "user": 2
+}
+```
+
+### 중요 파일 목록 조회
+dropbox 사용자별 중요 파일 조회에 대한 설명입니다.
+
+##### Request
+##### URL
+```http
+GET /myfile/starred
+Host: 
+```
+
+
+##### Response
+```json
+
+{
+   "file_name": "aaa",
+    "register_date": "2021-06-01T11:44:28.428331Z",
+    "modified_date": "2021-06-01T11:44:28.428331Z",
+    "is_shared": false,
+    "is_starred": true,
+    "file": "",
+    "user": 2
+}
+
+{
+   "file_name": "aaaaa",
+    "register_date": "2021-06-01T10:44:28.428331Z",
+    "modified_date": "2021-06-01T10:44:28.428331Z",
+    "is_shared": false,
+    "is_starred": true,
+    "file": "",
+    "user": 2
+}
+```
