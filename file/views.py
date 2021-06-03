@@ -1,7 +1,10 @@
+import datetime
+
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 # FileViewSet
@@ -46,9 +49,11 @@ class FileViewSet(ModelViewSet):
         new_data = request.data.dict()
         file_name = request.data['file_name']
         is_shared = request.data['is_shared']
+        is_starred = request.data['is_starred']
         file = request.data['file']
         new_data['file_name'] = file_name
         new_data['is_shared'] = is_shared
+        new_data['is_starred'] = is_starred
         new_data['file'] = file
         new_data['user'] = User.objects.get(username=self.request.user).id
 
@@ -66,7 +71,6 @@ class FileViewSet(ModelViewSet):
     # get each user's file list
     # get query_set
     def list(self, request, *args, **kwargs):
-        print(request.FILES.getlist("file"))
         return super().list(request, args, kwargs)
 
     # Download file
@@ -106,3 +110,25 @@ class FileViewSet(ModelViewSet):
 
         else:
             return Response(trash_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# 최근 문서함을 조회하는 api(구글 드라이브의 모든 문서가 수정된 날짜 순으로 조회됨을 볼 수 있다.)
+class RecentFileView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+        file = File.objects.filter(user=self.request.user).order_by("-modified_date")
+
+        serializer = FileSerializer(file, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+# 중요 문서함을 조회하는 api
+class StarredFileView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+        files = File.objects.filter(user=self.request.user, is_starred=True)
+
+        serializer = FileSerializer(files, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
