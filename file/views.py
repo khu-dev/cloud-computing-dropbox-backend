@@ -1,11 +1,11 @@
 import datetime
 
 from django.contrib.auth.models import User
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import GenericViewSet, ModelViewSet
+from rest_framework.viewsets import ModelViewSet
 
 # FileViewSet
 
@@ -111,7 +111,7 @@ class FileViewSet(ModelViewSet):
             return Response(trash_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# 최근 문서함을 조회하는 api(구글 드라이브의 모든 문서가 수정된 날짜 순으로 조회됨을 볼 수 있다.)
+# 최근 문서함을 조회하는 api(구글 드라이브의 모든 문서가 수정된 날짜 순으로 조회됨을 볼 수 있다. -> 일정 기준 시간 이후에 수정된 파일을 조회)
 class RecentFileView(APIView):
     permission_classes = (IsAuthenticated,)
 
