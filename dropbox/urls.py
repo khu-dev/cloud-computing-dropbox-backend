@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from file.views import FileViewSet, RecentFileView, StarredFileView
+from file.views import FileViewSet, RecentFileView, StarredFileView, UpdateFileView
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'files', FileViewSet, basename='files')
@@ -27,4 +27,5 @@ urlpatterns = [
     path('users/', include('user.urls')),
     path('myfile/recent', RecentFileView.as_view()),
     path('myfile/starred', StarredFileView.as_view()),
+    path('myfile/update/<str:file_name>', UpdateFileView.as_view())
 ]

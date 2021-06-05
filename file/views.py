@@ -1,5 +1,6 @@
 import datetime
 
+import boto3
 from django.contrib.auth.models import User
 from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
@@ -56,7 +57,7 @@ class FileViewSet(ModelViewSet):
         new_data['is_starred'] = is_starred
         new_data['file'] = file
         new_data['user'] = User.objects.get(username=self.request.user).id
-
+        print()
         new_query_dict = QueryDict('', mutable=True)
         new_query_dict.update(new_data)
         file_serializer = FileSerializer(data=new_query_dict)
@@ -133,3 +134,44 @@ class StarredFileView(APIView):
 
         serializer = FileSerializer(files, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class DownloadViewSet(APIView):
+
+    def get(self, request, file_name=""):
+        s3 = boto3.client('s3')
+        bucket_name = "storage.drive.jinsu.me"  # "mycloudcomputing-yeonsu"
+        key_name = file_name
+
+        # Generate the URL to get 'key-name' from 'bucket-name'
+        url = s3.generate_presigned_url(
+            ClientMethod='get_object',
+            Params={
+                'Bucket': bucket_name,
+                'Key': key_name
+            }
+        )
+
+        # Use the URL to perform the GET operation. You can use any method you like
+        # to send the GET, but we will use requests here to keep things simple.
+        return Response(url, status=status.HTTP_200_OK)
+
+
+class UpdateFileView(generics.UpdateAPIView):
+    permission_classes = (IsAuthenticated, )
+    serializer_class = FileSerializer
+    lookup_field = 'file_name'
+
+    def get_queryset(self):
+        return File.objects.filter(user=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        else:
+            return Response({"message": "failed", "details": serializer.errors})
