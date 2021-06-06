@@ -348,6 +348,24 @@ Host:
 }
 ```
 
+### 파일 삭제
+dropbox 파일 삭제에 대한 설명입니다.
+
+##### Request
+##### URL
+```http
+DELETE /myfile/delete/<str:file_name>
+Host: 
+```
+
+##### Response
+```json
+
+{
+    "Delete file_name"
+}
+```
+
 ### 파일 다운로드
 dropbox 파일 다운로드에 대한 설명입니다.
 
