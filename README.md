@@ -474,7 +474,7 @@ dropbox 공유 문서 조회에 대한 설명입니다.
 ##### Request
 ##### URL
 ```http
-GET /file/share
+GET /myfile/share
 Host: 
 ```
 
