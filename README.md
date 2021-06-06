@@ -468,6 +468,41 @@ Host:
 }
 ```
 
+### 공유 문서 조회
+dropbox 공유 문서 조회에 대한 설명입니다.
+
+##### Request
+##### URL
+```http
+GET /file/share
+Host: 
+```
+
+
+##### Response
+```json
+
+{
+   "file_name": "aaa",
+    "register_date": "2021-06-01T11:44:28.428331Z",
+    "modified_date": "2021-06-01T11:44:28.428331Z",
+    "is_shared": true,
+    "is_starred": true,
+    "file": "",
+    "user": 1
+}
+
+{
+   "file_name": "aaaaa",
+    "register_date": "2021-06-01T10:44:28.428331Z",
+    "modified_date": "2021-06-01T10:44:28.428331Z",
+    "is_shared": true,
+    "is_starred": true,
+    "file": "",
+    "user": 2
+}
+```
+
 ### 휴지통
 dropbox 파일을 휴지통에 이동하는 작업에 대한 설명입니다.
 
