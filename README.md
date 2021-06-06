@@ -243,7 +243,7 @@ Host:
 
 | Parameter      | Description                                            |
 | -------------- | ------------------------------------------------------ |
-| username       | 사용자 새로운 비밀번호                                   |
+| username       | 사용자 아이디                                           |
 | first_name     | 사용자 이름                                             |
 | last_name      | 사용자 성                                               |
 | email          | 사용자 이메일                                           |
