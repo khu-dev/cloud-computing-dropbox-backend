@@ -243,7 +243,7 @@ Host:
 
 | Parameter      | Description                                            |
 | -------------- | ------------------------------------------------------ |
-| username       | 사용자 새로운 비밀번호                                   |
+| username       | 사용자 아이디                                           |
 | first_name     | 사용자 이름                                             |
 | last_name      | 사용자 성                                               |
 | email          | 사용자 이메일                                           |
@@ -317,13 +317,13 @@ Host:
 }
 ```
 
-### 휴지통
-dropbox 파일을 휴지통에 이동하는 작업에 대한 설명입니다.
+### 파일 수정
+dropbox 파일 수정에 대한 설명입니다.
 
 ##### Request
 ##### URL
 ```http
-DELETE /files
+PUT /myfile/update/<str:file_name>
 Host: 
 ```
 
@@ -331,16 +331,20 @@ Host:
 | Parameter | Description |
 | --- | --- |
 | file_name | 파일 이름 |
-| file_path | 파일의 저장경로 |
-| modified_date | 최근 수정한 날짜 |
-| user_id | 파일의 소유자 id |
-| is_shared | 파일이 공유되고 있는지 여부 |
+| is_shared | 파일 공유 여부 |
+| is_starred | 파일  여부 |
 
 ##### Response
 ```json
 
 {
-    “message” : “success delete!”
+    "file_name": "aaa",
+    "register_date": "2021-06-01T11:44:28.428331Z",
+    "modified_date": "2021-06-01T15:44:28.428331Z",
+    "is_shared": false,
+    "is_starred" : false,
+    "file": "",
+    "user": 2
 }
 ```
 
@@ -461,5 +465,32 @@ Host:
     "is_starred": true,
     "file": "",
     "user": 2
+}
+```
+
+### 휴지통
+dropbox 파일을 휴지통에 이동하는 작업에 대한 설명입니다.
+
+##### Request
+##### URL
+```http
+DELETE /files
+Host: 
+```
+
+##### Parameter
+| Parameter | Description |
+| --- | --- |
+| file_name | 파일 이름 |
+| file_path | 파일의 저장경로 |
+| modified_date | 최근 수정한 날짜 |
+| user_id | 파일의 소유자 id |
+| is_shared | 파일이 공유되고 있는지 여부 |
+
+##### Response
+```json
+
+{
+    “message” : “success delete!”
 }
 ```
