@@ -57,7 +57,6 @@ class FileViewSet(ModelViewSet):
         new_data['is_starred'] = is_starred
         new_data['file'] = file
         new_data['user'] = User.objects.get(username=self.request.user).id
-        print()
         new_query_dict = QueryDict('', mutable=True)
         new_query_dict.update(new_data)
         file_serializer = FileSerializer(data=new_query_dict)
@@ -73,26 +72,7 @@ class FileViewSet(ModelViewSet):
     def list(self, request, *args, **kwargs):
         return super().list(request, args, kwargs)
 
-    # Download file
-    # https://stackoverflow.com/questions/38697529/how-to-return-generated-file-download-with-django-rest-framework
-    @api_view(('GET',))  # resolve assertion error
-    @renderer_classes((TemplateHTMLRenderer, JSONRenderer))  # resolve assertion error
-    @action(methods=['get'], detail=True, renderer_classes=(PassthroughRenderer,))
-    def download(self, *args, **kwargs):
-        instance = self.get_object()
-
-        # get an open file handle
-        file_handle = instance.file.open()
-
-        # send file
-        response = FileResponse(file_handle, content_type='whatever')
-        response['Content-Length'] = instance.file.size
-        response['Content-Disposition'] = 'attachment; filename="%s"' % instance.file.name
-
-        return response
-
-    # move to trash
-    def destroy(self, request, *args, **kwargs):
+    def delete(self, request, *args, **kwargs):
 
         # 삭제할 파일
         data = request.data
@@ -158,7 +138,7 @@ class DownloadViewSet(APIView):
 
 
 class UpdateFileView(generics.UpdateAPIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
     serializer_class = FileSerializer
     lookup_field = 'file_name'
 
@@ -175,3 +155,13 @@ class UpdateFileView(generics.UpdateAPIView):
 
         else:
             return Response({"message": "failed", "details": serializer.errors})
+
+
+class ShareFileView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+        files = File.objects.filter(is_shared=True)
+
+        serializer = FileSerializer(files, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
