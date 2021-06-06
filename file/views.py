@@ -7,35 +7,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-
-# FileViewSet
-
-
 from file.models import File
 from file.serializers import FileSerializer
-
-# PassthroughRenderer
 from django.http import FileResponse, QueryDict
-from rest_framework import viewsets, renderers
-from rest_framework.decorators import action
-
-# AssertionError: .accepted_media_type not set on Response
-# https://stackoverflow.com/questions/55416471/how-to-resolve-assertionerror-accepted-renderer-not-set-on-response-in-django
-from rest_framework.decorators import api_view, renderer_classes
-from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
-
-# trashViewSet
-from trash.models import Trash
-from trash.serializers import TrashSerializer
-
-
-# Return data as-is.
-class PassthroughRenderer(renderers.BaseRenderer):
-    serializer_class = FileSerializer
-    media_type, format = '', ' '
-
-    def render(self, data, accepted_media_type=None, renderer_context=None):
-        return data
 
 
 class FileViewSet(ModelViewSet):
@@ -71,25 +45,6 @@ class FileViewSet(ModelViewSet):
     # get query_set
     def list(self, request, *args, **kwargs):
         return super().list(request, args, kwargs)
-
-    def delete(self, request, *args, **kwargs):
-
-        # 삭제할 파일
-        data = request.data
-        file_serializer = FileSerializer(data=data)
-        trash_serializer = TrashSerializer(data=data)
-
-        # trash db에 추가
-        if trash_serializer.is_valid():
-            trash_serializer.save()
-
-            # file db에서 삭제
-            if file_serializer.is_valid():
-                file_serializer.delete()
-                return Response(trash_serializer.data, status=status.HTTP_301_MOVED_PERMANENTLY)
-
-        else:
-            return Response(trash_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # 최근 문서함을 조회하는 api(구글 드라이브의 모든 문서가 수정된 날짜 순으로 조회됨을 볼 수 있다. -> 일정 기준 시간 이후에 수정된 파일을 조회)
@@ -165,3 +120,19 @@ class ShareFileView(APIView):
 
         serializer = FileSerializer(files, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# 파일 삭제 api
+class DeleteFileView(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = FileSerializer
+    lookup_field = 'file_name'
+
+    def get_queryset(self):
+        return File.objects.filter(user=self.request.user)
+
+    def delete(self, request, **kwargs):
+        file_name = kwargs.get('file_name')
+        file = File.objects.get(file_name=file_name)
+        file.delete()
+        return Response("Delete file {}".format(file_name), status=status.HTTP_200_OK)
