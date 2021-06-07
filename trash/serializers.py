@@ -4,4 +4,5 @@ from trash.models import Trash
 class TrashSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trash
-        fields = '__all__'
+        # fields = '__all__'
+        fields = ('file_name', 'register_date', 'modified_date', 'is_shared', 'file', 'users')

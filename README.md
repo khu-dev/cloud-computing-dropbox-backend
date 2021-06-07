@@ -372,7 +372,7 @@ dropbox 파일 다운로드에 대한 설명입니다.
 ##### Request
 ##### URL
 ```http
-POST /files/{file_name}/download
+GET /{file_name}/download
 Host: 
 ```
 
@@ -387,8 +387,6 @@ Host:
 ```
 [
 {"file_name":"test1.txt"},
-{"file_name":"test2.txt"},
-{"file_name":"test3.txt"},
 ]
 ```
 
@@ -527,7 +525,7 @@ dropbox 파일을 휴지통에 이동하는 작업에 대한 설명입니다.
 ##### Request
 ##### URL
 ```http
-DELETE /files
+POST /trash
 Host: 
 ```
 
@@ -535,7 +533,7 @@ Host:
 | Parameter | Description |
 | --- | --- |
 | file_name | 파일 이름 |
-| file_path | 파일의 저장경로 |
+| file | 파일 |
 | modified_date | 최근 수정한 날짜 |
 | user_id | 파일의 소유자 id |
 | is_shared | 파일이 공유되고 있는지 여부 |
@@ -544,6 +542,30 @@ Host:
 ```json
 
 {
-    “message” : “success delete!”
+    “message” : “success trash!”
+}
+```
+
+### 휴지통 파일 리스트 조회
+사용자별 휴지통 파일 조회에 대한 설명입니다.
+
+##### Request
+##### URL
+```http
+GET /trash
+Host: 
+```
+
+
+##### Response
+```json
+
+{
+   "file_name": "aaa",
+    "register_date": "2021-06-01T11:44:28.428331Z",
+    "modified_date": "2021-06-01T11:44:28.428331Z",
+    "is_shared": false,
+    "file": "",
+    "user": 2
 }
 ```
