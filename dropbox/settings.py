@@ -62,6 +62,7 @@ MIDDLEWARE = [
 # cors 세팅
 CORS_ORIGIN_WHITELIST = (
     "http://localhost:8080",
+    "http://web.drive.jinsu.me",
 )
 
 ROOT_URLCONF = 'dropbox.urls'
