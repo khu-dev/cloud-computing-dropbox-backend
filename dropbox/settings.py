@@ -15,8 +15,8 @@ from pathlib import Path
 import yaml
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-print("### Load config", os.path.join('config', os.getenv('DROPBOX_ENVIRONMENT', 'dev') + '.yaml'))
-config_file = open(os.path.join('config', os.getenv('DROPBOX_ENVIRONMENT', 'dev') + '.yaml'), encoding='utf8')
+print("### Load config", os.path.join('config', os.getenv('DROPBOX_ENVIRONMENT', 'local') + '.yaml'))
+config_file = open(os.path.join('config', os.getenv('DROPBOX_ENVIRONMENT', 'local') + '.yaml'), encoding='utf8')
 config_dict = yaml.load(config_file, yaml.SafeLoader)
 
 # Quick-start development settings - unsuitable for production

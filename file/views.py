@@ -1,5 +1,4 @@
 import datetime
-
 import boto3
 from django.contrib.auth.models import User
 from rest_framework import status, generics
@@ -10,11 +9,11 @@ from rest_framework.viewsets import ModelViewSet
 from file.models import File
 from file.serializers import FileSerializer
 from django.http import FileResponse, QueryDict
-
+import dropbox.settings
 
 class FileViewSet(ModelViewSet):
-    serializer_class = FileSerializer
     permission_classes = (IsAuthenticated,)
+    serializer_class = FileSerializer
 
     def get_queryset(self):
         return File.objects.filter(user=self.request.user)
@@ -42,7 +41,6 @@ class FileViewSet(ModelViewSet):
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # get each user's file list
-    # get query_set
     def list(self, request, *args, **kwargs):
         return super().list(request, args, kwargs)
 
@@ -72,24 +70,16 @@ class StarredFileView(APIView):
 
 
 class DownloadViewSet(APIView):
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, file_name=""):
         s3 = boto3.client('s3')
-        bucket_name = "storage.drive.jinsu.me"  # "mycloudcomputing-yeonsu"
-        key_name = file_name
+        bucket_name = dropbox.settings.AWS_STORAGE_BUCKET_NAME
+        file_name = "uploaded/" + file_name
 
-        # Generate the URL to get 'key-name' from 'bucket-name'
-        url = s3.generate_presigned_url(
-            ClientMethod='get_object',
-            Params={
-                'Bucket': bucket_name,
-                'Key': key_name
-            }
-        )
+        s3_response_object = s3.get_object(Bucket=bucket_name, Key=file_name)
 
-        # Use the URL to perform the GET operation. You can use any method you like
-        # to send the GET, but we will use requests here to keep things simple.
-        return Response(url, status=status.HTTP_200_OK)
+        return Response(s3_response_object, status=status.HTTP_200_OK)
 
 
 class UpdateFileView(generics.UpdateAPIView):
@@ -126,13 +116,20 @@ class ShareFileView(APIView):
 class DeleteFileView(APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = FileSerializer
-    lookup_field = 'file_name'
 
     def get_queryset(self):
         return File.objects.filter(user=self.request.user)
 
-    def delete(self, request, **kwargs):
-        file_name = kwargs.get('file_name')
+    def delete(self, request, file_name=""):
+
+        # file db에서 delete
         file = File.objects.get(file_name=file_name)
         file.delete()
-        return Response("Delete file {}".format(file_name), status=status.HTTP_200_OK)
+
+        # S3에서 delete
+        s3 = boto3.client('s3')
+        bucket_name = dropbox.settings.AWS_STORAGE_BUCKET_NAME
+        file_name = "uploaded/" + file_name
+        response = s3.delete_object(Bucket=bucket_name, Key=file_name)
+
+        return Response(response, status=status.HTTP_200_OK)
